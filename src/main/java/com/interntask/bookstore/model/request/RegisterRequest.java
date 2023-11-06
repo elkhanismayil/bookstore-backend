@@ -25,6 +25,6 @@ public class RegisterRequest {
     private String username;
     @NotEmpty(message = "Password cannot be empty")
     private String password;
-    @NotNull(message = "Role must be AUTHOR or STUDENT and can not be null")
+    @NotNull(message = "Role must be ROLE_AUTHOR or ROLE_STUDENT and can not be null")
     private Role role;
 }

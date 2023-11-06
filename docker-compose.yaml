@@ -6,6 +6,7 @@ services:
       context: .
     container_name: bookstore-backend-app
     image: elxan310/bookstore:1.0
+    restart: always
     ports:
       - "8081:8081"
     environment:
