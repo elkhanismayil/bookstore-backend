@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: '169911'
+      author: elxan
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: surname
+                  type: VARCHAR(255)
+            tableName: user
+  - changeSet:
+      id: 1699128471736-4
+      author: elxan (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: username
+            constraintName: uc_a207721d4377033c99a4161e6
+            tableName: user
+

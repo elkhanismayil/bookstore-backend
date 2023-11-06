@@ -1,0 +1,52 @@
+version: '3.7'
+services:
+  spring-boot-app:
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    container_name: bookstore-backend-app
+    image: elxan310/bookstore:1.0
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://bookstore-postgres-db:5432/bookstore
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_RABBITMQ_HOST=rabbitmq
+    depends_on:
+      - postgres
+      - rabbitmq
+
+
+  postgres:
+    container_name: bookstore-postgres-db
+    image: postgres:14.9
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    ports:
+      - '5432:5432'
+    volumes:
+      - ../../bookstore-data:/var/lib/postgresql@14/data
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.9.10-management
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=pass
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    volumes:
+      - ../../rabbit:/var/lib/rabbitmq/mnesia
+networks:
+  rabbitmq-network:
+    driver: bridge

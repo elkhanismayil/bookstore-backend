@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: '16991296001'
+      author: elxan
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: email
+            constraintName: uc_c98819d926c5f99f2d57497f0
+            tableName: user
+

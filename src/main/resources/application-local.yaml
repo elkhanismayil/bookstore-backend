@@ -1,0 +1,48 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bookstore
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: user
+    password: pass
+
+    queue:
+      json:
+        name: notification-queue
+
+    exchange:
+      name: notification-exchange
+
+    routing:
+      json:
+        key: notification-routing-key
+
+app:
+  jwt:
+    secret: e3b9f66eceea638b2e9ae6a746fbc2acc72bd731837665e59204f9925e0c2241
+    expiration: 3600000
+
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type: trace
+
