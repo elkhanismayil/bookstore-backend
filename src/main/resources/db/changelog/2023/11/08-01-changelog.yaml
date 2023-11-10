@@ -1,0 +1,46 @@
+databaseChangeLog:
+  - changeSet:
+      id: '169871'
+      author: elxan (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_subscription
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: student_id
+                  type: BIGINT
+              - column:
+                  name: author_id
+                  type: BIGINT
+            tableName: subscription
+  - changeSet:
+      id: '16994162'
+      author: elxan (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: author_id
+            baseTableName: subscription
+            constraintName: FK_SUBSCRIPTION_ON_AUTHOR
+            referencedColumnNames: id
+            referencedTableName: author
+  - changeSet:
+      id: '1699416153'
+      author: elxan (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: student_id
+            baseTableName: subscription
+            constraintName: FK_SUBSCRIPTION_ON_STUDENT
+            referencedColumnNames: id
+            referencedTableName: student
+

@@ -1,9 +1,13 @@
 package com.interntask.bookstore.config;
 
+import com.interntask.bookstore.security.CustomBasicAuthenticationEntryPoint;
+import com.interntask.bookstore.security.CustomBearerTokenAccessDeniedHandler;
+import com.interntask.bookstore.security.CustomBearerTokenAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,6 +23,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authenticationProvider;
+    private final CustomBasicAuthenticationEntryPoint customBasicAuthenticationEntryPoint;
+    private final CustomBearerTokenAuthenticationEntryPoint customBearerTokenAuthenticationEntryPoint;
+    private final CustomBearerTokenAccessDeniedHandler customBearerTokenAccessDeniedHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -31,17 +38,12 @@ public class SecurityConfig {
                                 .anyRequest()
                                 .authenticated()
                 )
-                .exceptionHandling(exceptionHandling ->
-                        exceptionHandling
-                                .accessDeniedHandler((request, response, accessDeniedException) -> {
-                                    response.setStatus(403);
-                                    response.getWriter().write("Access denied");
-                                })
-                                .authenticationEntryPoint((request, response, authException) -> {
-                                    response.setStatus(401);
-                                    response.getWriter().write("Unauthorized");
-                                })
-                )
+                .httpBasic(httpBasic ->
+                        httpBasic.authenticationEntryPoint(customBasicAuthenticationEntryPoint))
+                .oauth2ResourceServer(oauth2ResourceServer ->
+                        oauth2ResourceServer.jwt(Customizer.withDefaults())
+                                .authenticationEntryPoint(customBearerTokenAuthenticationEntryPoint)
+                                .accessDeniedHandler(customBearerTokenAccessDeniedHandler))
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
