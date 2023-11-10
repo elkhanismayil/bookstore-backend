@@ -37,6 +37,7 @@ app:
   jwt:
     secret: e3b9f66eceea638b2e9ae6a746fbc2acc72bd731837665e59204f9925e0c2241
     expiration: 3600000
+    location: jwtRS256.pkcs8.pem
 
 
 logging:
