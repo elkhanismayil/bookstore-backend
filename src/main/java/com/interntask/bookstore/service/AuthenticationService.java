@@ -25,12 +25,8 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
-        if (userRepository.existsByUsername(request.getUsername())) {
-            throw new DuplicateKeyException("Username already exists!");
-        }
-
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new DuplicateKeyException("Email already exists!");
+        if (userRepository.existsByUsernameOrEmail(request.getUsername(), request.getEmail())) {
+            throw new DuplicateKeyException("Username or email already exists! Please input another one.");
         }
 
         User user = User.builder()
